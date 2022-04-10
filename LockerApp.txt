@@ -1,0 +1,221 @@
+package com.locker;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Project {
+	 
+	public static void main(String[] args) {
+		Scanner sc=new Scanner(System.in);
+		
+		
+		System.out.println("Enter the path of Directory");
+		String path=sc.next();
+		File temppath=new File(path);
+		
+		
+		
+		System.out.println("Enter the  name of Directory");
+		path=path+sc.next();
+		File dirfile=new File(path);
+		boolean bool=dirfile.mkdir();
+		
+		if(bool)
+		{
+			System.out.println("Success");
+			
+		}
+		else
+		{
+			System.out.println("failure");
+		}
+		boolean val1=true;
+		
+	  while(val1)
+	  {
+		  System.out.println("Enter 1.Sorting Directories and files in ascendig order");
+		  System.out.println("2.Business operations like Create,Delete,Search Files");
+		  System.out.println("3.Exit ");
+		  byte ch1=sc.nextByte();
+		  switch(ch1)
+		  {
+		  case 1:System.out.println("Files sorted in ascending order");
+	               sortfilesIAscendingOrder(temppath);
+                   break;
+                         
+                         
+	 case 2:  
+			  boolean val=true;
+
+			String temp=path;
+			while(val)
+			{
+			 System.out.println("Choose your option");	
+			 System.out.println("1.create file 2.checkfile 3.delete 4.exit");	
+			 byte ch=sc.nextByte();
+			 switch(ch)
+			 {
+			 
+			 case 1:System.out.println("Enter the file name u want to create");
+			        String filecr=sc.next();
+			        if(checkFileExistence(dirfile,filecr))
+			        {
+			        	System.out.println("File existed give another file");
+			        	filecr=sc.next();
+			        }
+			        else
+			        {   
+			        	createFilesInsideDirectory(path,filecr);
+			        	
+			        }
+			         break;
+			
+			 case 2:System.out.println("Enter file name to check existence");
+			        String chkfile=sc.next();
+			        boolean res=checkFileExistence(dirfile,chkfile);
+			        if(res)
+			        {
+			         System.out.println("Existed");
+			        }
+			        else
+			        {
+			        	System.out.println("not existed");
+			        }
+			        break;
+			
+			 case 3:System.out.println("Enter the filename to delete");
+			        String delfile=sc.next();
+			        String delfilepath=temp+"//"+delfile;
+			        
+			        if(checkFileExistence(dirfile,delfile))
+			        {
+			        	boolean delres=deleteFile(delfile,delfilepath,dirfile);
+			        if(delres)
+			         {
+				     System.out.println("deleted Successfully");
+			          }
+			        		
+			         else
+			          {
+				      System.out.println("deletion failed");
+			           }
+			        }
+			        else
+			        {
+			        	System.out.println(" File not found give proper name");
+			        	delfile=sc.next();
+			        }
+			        break;
+			  case 4:
+				    System.out.println("Enter option 5 exit");
+				     val=false;
+				     break;
+			  default:
+				      System.out.println("Wrong choice eneter 1 to 5");
+			           ch=sc.nextByte();
+			        
+			        
+			        
+			        
+			 }    
+			
+			}
+			break;
+	 case 3:
+		    System.out.println("Exit");
+		    System.exit(0);
+		     break;
+	 default :
+		    System.out.println("enter values between 1to3");
+		    ch1=sc.nextByte();
+	 
+		  }
+		  	  
+		
+				
+		}
+		       
+	  
+	  	  
+		
+	}
+
+	private static void sortfilesIAscendingOrder(File temppath) {
+		File downloaddir[]=temppath.listFiles();
+        Arrays.sort(downloaddir);
+          for(File e:downloaddir)
+          {
+              if(e.isFile())
+               {
+	              System.out.println("File:"+e.getName());
+                }
+              else if(e.isDirectory())
+                  {
+	                 System.out.println("File"+e.getName());
+                   }
+              else
+              {
+	                  System.out.println("not unknown");
+               }
+          }
+        
+		
+	}
+
+	private static boolean deleteFile(String delfile, String delfilepath, File dirfile) {
+		{
+			File delfile1=new File(delfilepath);
+			if(delfile1.delete())
+			{
+				System.out.println(delfile1.getName()+"deleted successfully");
+				return true;
+			}
+		
+		}
+		
+		
+	    
+		return false;
+	}
+
+	private static boolean checkFileExistence(File dirfile, String chkfile) {
+		File[] dir_files=dirfile.listFiles();
+		boolean check=new File(chkfile).exists();
+		
+		
+		for(int i=0;i<dir_files.length;i++)
+		{
+			if(dir_files[i].getName().equalsIgnoreCase(chkfile))
+			{
+			
+				
+				return true;
+			}
+		}
+		
+		
+		return false;
+	}
+
+	private static void createFilesInsideDirectory(String path, String filecr) {
+		
+		path=path+"//"+filecr;
+		
+		File file =new File(path);
+		try {
+			file.createNewFile();
+			System.out.println("done");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
+		
+		
+	}
+
+	
+
+}
